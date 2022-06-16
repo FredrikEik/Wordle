@@ -12,7 +12,18 @@ GuessResponse Wordle::guess(const std::string& word)
         {
             if (word[i] == secret_word[i])
             {
-                exact_print(word[i]);//need to find another way to print
+                std::cout << exact_print(word[i]);
+            }
+            //searches until the end of string
+            //check if its correct character but is in the wrong spot
+            else if (secret_word.find(word[i]) != std::string::npos)
+            {
+                std::cout << contains_print(word[i]);
+            }
+            //prints unmatched characters
+            else
+            {
+                std::cout << same_print(word[i]);
             }
         }
     }
@@ -48,19 +59,25 @@ std::string Wordle::get_word(const std::string& filename)
 
 std::string Wordle::exact_print(char c)
 {
-    //should print green
+
     std::stringstream ss;
     ss << "\033[1;32m" << c << "\033[0m";
-    std::cout << ss.str();
     return ss.str();
 }
 
 std::string Wordle::contains_print(char c)
 {
-    //should print yellow
+
     std::stringstream ss;
     ss << "\033[1;33m" << c << "\033[0m";
 
+    return ss.str();
+}
+
+std::string Wordle::same_print(char c)
+{
+    std::stringstream ss;
+    ss << c;
     return ss.str();
 }
 
