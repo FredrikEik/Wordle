@@ -2,15 +2,26 @@
 
 GuessResponse Wordle::guess(const std::string& word)
 {
+    std::cout << "\nsecret word for debug purposes: " << secret_word;
     // need to make functions for exact match and contains match
     if (word.length() == 5)
     {
+        attempts++;
         std::cout << "\nYou guessed: " << word << std::endl;
-
+        for (unsigned int i = 0; i < word.length(); i++)
+        {
+            if (word[i] == secret_word[i])
+            {
+                exact_print(word[i]);//need to find another way to print
+            }
+        }
     }
     else
-        std::cout << "5 letter word! Not " << word.length() << "!\n";
-    
+        std::cout << "\n5 letter word! Not " << word.length() << "!\n";
+    if (word == secret_word)
+        gameWon(true);
+    if (attempts >= max_attempts)
+        gameLost(true);
     return {false, word};
 }
 
@@ -24,15 +35,13 @@ std::string Wordle::get_word(const std::string& filename)
 
     if (!file.is_open())
     {
-        std::cout << "Can not open: " << filename << std::endl;
+        std::cout << "\nCan not open: " << filename << std::endl;
         return {};
     }
-    // else
-        //std::cout << file.rdbuf(); //test input funker
-    //Exits after this for some reason.
 
     while (std::getline(file, word))
         result.push_back(word);
+  
 
     return result[std::rand() % result.size()];
 }
@@ -42,7 +51,7 @@ std::string Wordle::exact_print(char c)
     //should print green
     std::stringstream ss;
     ss << "\033[1;32m" << c << "\033[0m";
-
+    std::cout << ss.str();
     return ss.str();
 }
 
@@ -53,4 +62,25 @@ std::string Wordle::contains_print(char c)
     ss << "\033[1;33m" << c << "\033[0m";
 
     return ss.str();
+}
+
+bool Wordle::gameWon(bool b)
+{
+    if (b)
+    {
+        game_active = false;
+        std::cout << "\nYOU WON! Attempts used: " << attempts << ".\n";
+    }
+    return game_active;
+}
+
+bool Wordle::gameLost(bool b)
+{
+    if (b)
+    {
+        game_active = false;
+        std::cout << "\nYOU LOST! The hidden word was: " << secret_word << ".\n";
+    }
+
+    return game_active;
 }

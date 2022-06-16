@@ -13,12 +13,16 @@ class Wordle
   explicit Wordle(const std::string& dictionary)
   : secret_word(get_word(dictionary)) {}
 
+  bool game_active = true;
   GuessResponse guess(const std::string& word);
 
  private:
   static std::string get_word(const std::string& filename);
   static std::string exact_print(char c);
   static std::string contains_print(char c);
+
+  bool gameWon(bool b);
+  bool gameLost(bool b);
 
   int attempts = 0;
   const int max_attempts = 6;
