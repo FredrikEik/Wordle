@@ -2,17 +2,17 @@
 
 GuessResponse Wordle::guess(const std::string& word)
 {
-    std::cout << "\nsecret word for debug purposes: " << secret_word;
+    // std::cout << "\nsecret word for debug purposes: " << secret_word;
     // need to make functions for exact match and contains match
     if (word.length() == 5)
     {
         attempts++;
-        std::cout << "\nYou guessed: " << word << std::endl;
+        std::cout << "\nYou guessed: " << word << ". Attempts remaining: " << max_attempts - attempts << std::endl;
         for (unsigned int i = 0; i < word.length(); i++)
         {
             if (word[i] == secret_word[i])
             {
-                std::cout << exact_print(word[i]);
+                std::cout  << exact_print(word[i]);
             }
             //searches until the end of string
             //check if its correct character but is in the wrong spot
